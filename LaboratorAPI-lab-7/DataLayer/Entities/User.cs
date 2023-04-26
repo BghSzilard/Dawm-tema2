@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entities
 {
-    public class User
+    public class User: BaseEntity
     {
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+        public Role.RoleType RoleType { get; set; }
     }
 }
