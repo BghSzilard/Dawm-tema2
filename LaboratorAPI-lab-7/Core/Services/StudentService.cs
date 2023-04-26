@@ -10,7 +10,6 @@ namespace Core.Services
     public class StudentService
     {
         private readonly UnitOfWork unitOfWork;
-
         public StudentService(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
