@@ -13,7 +13,7 @@ namespace DataLayer.Repositories
             this.dbContext = dbContext;
         }
 
-        public Student GetByIdWithGrades(int studentId, CourseType type)
+        public Student GetByIdWithGrades(int studentId)
         {
             var result = dbContext.Students
                .Select(e => new Student
@@ -23,7 +23,6 @@ namespace DataLayer.Repositories
                     Id = e.Id,
                     ClassId= e.ClassId,
                     Grades = e.Grades
-                        .Where(g => g.Course == type)
                         .OrderByDescending(g => g.Value)
                         .ToList()
                })

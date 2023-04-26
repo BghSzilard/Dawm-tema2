@@ -7,8 +7,5 @@ namespace Core.Dtos
     {
         [Required]
         public int StudentId { get; set; }
-
-        [Required]
-        public CourseType CourseType { get; set; }
     }
 }

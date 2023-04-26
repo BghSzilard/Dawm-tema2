@@ -12,31 +12,24 @@ namespace Project.Controllers
     public class StudentsController : ControllerBase
     {
         private StudentService studentService { get; set; }
-
-
         public StudentsController(StudentService studentService)
         {
             this.studentService = studentService;
         }
-        //[HttpPost("/register")]
-        //[AllowAnonymous]
-        //public IActionResult Register(RegisterDto payload)
-        //{
-        //    studentService.
-        //}
-        [HttpPost("/add")]
-        public IActionResult Add(StudentAddDto payload)
+        [HttpPost("/register")]
+        [AllowAnonymous]
+        public IActionResult Register(StudentRegisterDto payload)
         {
-            var result = studentService.AddStudent(payload);
-
-            if (result == null)
-            {
-                return BadRequest("Student cannot be added");
-            }
-
-            return Ok(result);
+            studentService.Register(payload);
+            return Ok();
         }
-
+        [HttpPost("/login")]
+        [AllowAnonymous]
+        public IActionResult Login(LoginDto payload)
+        {
+            var jwtToken = studentService.Validate(payload);
+            return Ok(new { token = jwtToken });
+        }
 
         [HttpGet("/get-all")]
         public ActionResult<List<Student>> GetAll()
@@ -45,54 +38,12 @@ namespace Project.Controllers
 
             return Ok(results);
         }
-
-        [HttpGet("/get/{studentId}")]
-        public ActionResult<Student> GetById(int studentId)
+        [HttpGet("/getOwnGrades")]
+        [Authorize(Roles ="Student")]
+        public ActionResult<List<Grade>> GetOwnGrades([FromBody] StudentGradesRequest request)
         {
-            var result = studentService.GetById(studentId);
-
-            if(result == null)
-            {
-                return BadRequest("Student not fount");
-            }
-
+            var result = studentService.GetGradesById(request.StudentId);
             return Ok(result);
-        }
-
-        [HttpPatch("edit-name")]
-        public ActionResult<bool> GetById([FromBody] StudentUpdateDto studentUpdateModel)
-        {
-            var result = studentService.EditName(studentUpdateModel);
-
-            if (!result)
-            {
-                return BadRequest("Student could not be updated.");
-            }
-
-            return result;
-        }
-
-        [HttpPost("grades-by-course")]
-        public ActionResult<GradesByStudent> Get_CourseGrades_ByStudentId([FromBody] StudentGradesRequest request)
-        {
-            var result = studentService.GetGradesById(request.StudentId, request.CourseType);
-            return Ok(result);
-        }
-
-        [HttpGet("{classId}/class-students")]
-        public IActionResult GetClassStudents([FromRoute] int classId)
-        {
-            var results = studentService.GetClassStudents(classId);
-
-            return Ok(results);
-        }
-
-        [HttpGet("grouped-students")]
-        public IActionResult GetGroupedStudents()
-        {
-            var results = studentService.GetGroupedStudents();
-
-            return Ok(results);
         }
     }
 }

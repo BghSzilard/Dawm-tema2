@@ -41,12 +41,10 @@ namespace DataLayer.Repositories
         {
             return GetRecords().ToList();
         }
-
         public bool Any(Func<T, bool> expression)
         {
             return GetRecords().Any(expression);
         }
-
         protected IQueryable<T> GetRecords()
         {
             return _dbSet.AsQueryable<T>();
