@@ -2,6 +2,7 @@
 using Core.Services;
 using DataLayer.Dtos;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Project.Controllers
@@ -17,7 +18,12 @@ namespace Project.Controllers
         {
             this.studentService = studentService;
         }
-
+        //[HttpPost("/register")]
+        //[AllowAnonymous]
+        //public IActionResult Register(RegisterDto payload)
+        //{
+        //    studentService.
+        //}
         [HttpPost("/add")]
         public IActionResult Add(StudentAddDto payload)
         {
