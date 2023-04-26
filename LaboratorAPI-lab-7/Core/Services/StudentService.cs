@@ -10,6 +10,7 @@ namespace Core.Services
     public class StudentService
     {
         private readonly UnitOfWork unitOfWork;
+        private AuthorizationService authService { get; set; }
         public StudentService(UnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
@@ -37,7 +38,24 @@ namespace Core.Services
 
             return payload;
         }
+        public string GetRole(User user)
+        {
+            return user.RoleType.ToString();
+        }
+        public string Validate(LoginDto payload)
+        {
+            var student = unitOfWork.Students.GetByEmail(payload.Email);
+            var passwordFine = authService.VerifyHashedPassword(student.PasswordHash, payload.Password);
 
+            if (passwordFine)
+            {
+                return authService.GetToken(student);
+            }
+            else
+            {
+                return null;
+            }
+        }
         public List<Student> GetAll()
         {
             var results = unitOfWork.Students.GetAll();

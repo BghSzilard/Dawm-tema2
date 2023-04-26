@@ -1,6 +1,6 @@
 ﻿namespace DataLayer.Entities;
 
-public class Student : BaseEntity
+public class Student : User
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
